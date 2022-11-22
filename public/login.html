@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<title>Chat application</title>	
+</head>
+<body>
+<div id="container">
+	<h1>Anonymous chat</h1><br>
+	<form method="post" autocomplete="off" id="myform">
+		<label>Enter email</label><br>
+		<input type="email" name="uemail"/><br><br>
+		<label>Enter password</label><br>
+		<input type="password" name="upass"/><br><br>
+		<button id="Submit-btn">Sign in</button>
+	</form><br>
+	<p style="font-family:monospace;">**Anonymous chat is private live chat application**</p>
+</div>
+<script type="text/javascript">
+	var sbtn=document.getElementById('Submit-btn')
+	var form=document.getElementById('myform')
+	var data={}
+	sbtn.onclick=(e)=>{
+		e.preventDefault();
+		var formdata=new FormData(form)
+		for(var [key,value] of formdata){
+			data[key]=value
+		}
+		console.log(data)
+		fetch('http://localhost:3000/verifyData',{
+			method:'POST',
+			body:JSON.stringify(data),
+			headers:{
+				'content-type':'application/json; charset=UTF-8'
+			}
+		})
+		.then((res)=>res.text())
+		.then((res)=>{
+			if(res=="ok"){
+				window.location.replace("http://localhost:3000/chat")
+			}
+			else{
+				alert(res)
+			}
+		})
+	}		
+</script>
+</body>
+</html>
